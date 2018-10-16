@@ -225,7 +225,21 @@ const PhoneService = {
   },
 
   getPhone(phoneId) {
-    return phoneDetails;
+    let phonesFromServer = this.getPhones();
+    let requiredPhone = {};
+
+    if ( !phonesFromServer ) {
+      throw Error('No phones are availabie on server');
+    }
+
+    for ( let phone of phonesFromServer ) {
+      if ( phone && ( phone.id === phoneId ) ) {
+        requiredPhone = phone;
+        break;
+      }
+    }
+
+    return requiredPhone;
   }
 };
 

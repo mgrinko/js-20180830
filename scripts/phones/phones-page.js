@@ -35,7 +35,9 @@ export default class PhonesPage {
         this._viewer.hide();
         this._catalog.show();
       },
-      onAddToCartClicked: () => {},
+      onAddToCartClicked: () => {
+        console.log("---", "Add to cart");
+      },
     })
   }
 

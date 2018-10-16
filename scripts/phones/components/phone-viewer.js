@@ -10,13 +10,15 @@ export default class PhoneViewer extends Component{
 
     super({ element });
 
-    this._phone = null;
+    this._phone = {};
     this._element = element;
 
     this._onBackClicked = onBackClicked;
+    this._onAddToCartClicked = onAddToCartClicked;
 
     this._element.addEventListener('click', (event) => {
       this._handleBackClick(event);
+      this._handleAddToCartClick(event);
     })
   }
 
@@ -33,38 +35,49 @@ export default class PhoneViewer extends Component{
     return;
   }
 
+  _handleAddToCartClick(event) {
+    if ( event.target.closest('[data-button="addToCart"]') ) {
+      this._onAddToCartClicked();
+    }
+    return;
+  }
+
+  _renderPhoneGallery() {
+    let {
+      images: phoneImageUrls = [],
+    } = this._phone;
+
+    if ( phoneImageUrls && phoneImageUrls.length > 0 ) {
+      return (`
+        <ul class="phone-thumbs">
+          ${ phoneImageUrls.map((phoneUrl) => `
+            <li>
+              <img src="${ phoneUrl }">
+            </li>
+          `).join('') }
+        </ul>
+      `)
+    } else return;
+  }
+
   _render() {
+    let {
+      age: phoneAge = null,
+      id: phoneId = '',
+      imageUrl: phoneMainImageUrl = [],
+      name: phoneName = '',
+      snippet: phoneSnippet = '',
+    } = this._phone;
+
     this._element && ( this._element.innerHTML = `
-      <img class="phone" src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
+      <img class="phone" src="${ phoneMainImageUrl }">
 
       <button data-button='backButton'>Back</button>
-      <button>Add to basket</button>
+      <button data-button='addToCart'>Add to basket</button>
   
-  
-      <h1>Motorola XOOM™ with Wi-Fi</h1>
-  
-      <p>Motorola XOOM with Wi-Fi has a super-powerful dual-core processor and Android™ 3.0 (Honeycomb) — the Android platform designed specifically for tablets. With its 10.1-inch HD widescreen display, you’ll enjoy HD video in a thin, light, powerful and upgradeable tablet.</p>
-  
-      <ul class="phone-thumbs">
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.1.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.2.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.3.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.4.jpg">
-        </li>
-        <li>
-          <img src="img/phones/motorola-xoom-with-wi-fi.5.jpg">
-        </li>
-      </ul>
+      <h1>${ phoneName }</h1>
+      <p>${ phoneSnippet }</p>
+      ${ this._renderPhoneGallery() || '' }
     ` )
   }
 }
