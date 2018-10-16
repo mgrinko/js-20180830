@@ -109,3 +109,9 @@ ul.specs dt {
 h1 {
   border-bottom: 1px solid gray;
 }
+
+.cart__button-delete {
+  cursor: pointer;
+  color: red;
+  font-weight: bold;
+}

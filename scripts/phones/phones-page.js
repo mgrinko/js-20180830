@@ -28,7 +28,7 @@ export default class PhonesPage {
         this._viewer.show(phoneDetails);
       },
       onAddToCartClicked: () => {
-        this._initCart();
+        this._cart.render();
       },
     });
   }
@@ -41,7 +41,7 @@ export default class PhonesPage {
         this._catalog.show();
       },
       onAddToCartClicked: () => {
-        this._initCart();
+        this._cart.render();
       },
     })
   }

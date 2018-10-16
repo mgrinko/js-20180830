@@ -8,15 +8,19 @@ class Store {
     this[this._storeItem].push(data);
   }
 
-  removeItem(storeItem, data) {
-    console.log("---", "remove from storeItem, data:", storeItem, data);
+  removeItem(data) {
+    let dataIndex = this[this._storeItem].indexOf(data);
+    if ( dataIndex > -1 ) {
+      this[this._storeItem].splice(dataIndex, 1);
+    }
+    return;
   }
 
-  getItems(storeItem) {
+  getItems() {
     return this[this._storeItem]
   }
 
-  clear(storeItem) {
+  clear() {
     this[this._storeItem] = [];
   }
 }

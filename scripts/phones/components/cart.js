@@ -9,8 +9,22 @@ export default class Cart extends Component {
     super(element);
 
     this._element = element;
+    this._removeItem = this._removeItem.bind(this);
+    this._mountEventListeners();
 
-    this._render()
+    this.render();
+  }
+
+  _mountEventListeners() {
+    this._element.addEventListener('click', this._removeItem);
+  }
+
+  _removeItem(event) {
+    if ( event.target.dataset.action === 'deleteCartItem' ) {
+      let item = event.target.dataset.item;
+      cartStore.removeItem(item);
+      this.render();
+    }
   }
 
   _renderCart() {
@@ -18,12 +32,26 @@ export default class Cart extends Component {
     let renderCartItems = function() {
       if ( cartItems.length > 0 ) {
         cartItems = cartItems.map((item) => (`
-          <li>${ item }</li>
+          <li>
+            <span 
+              data-element="cartItem"
+            >
+              ${ item }
+            </span>
+            <span 
+              class="cart__button-delete"
+              data-action='deleteCartItem'
+              data-item=${ item }
+            >
+              Delete
+            </span>
+          </li>
         `)).join('');
 
-        return `<ul>${ cartItems }</ul>`
+        return `<ul>${ cartItems }</ul>`;
       }
-      return ''
+
+      return '';
     }
 
     return (`
@@ -32,7 +60,7 @@ export default class Cart extends Component {
     `)
   }
 
-  _render() {
-    this._element.innerHTML = `${ this._renderCart() }`
+  render() {
+    this._element.innerHTML = `${ this._renderCart() }`;
   }
 }
