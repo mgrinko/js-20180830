@@ -5,6 +5,8 @@ import PhoneService from './services/phone-service.js';
 export default class PhonesPage {
   constructor({ element }) {
     this._element = element;
+    this._viewer = null;
+    this._catalog = null;
 
     this._render();
 
@@ -29,6 +31,11 @@ export default class PhonesPage {
   _initViewer() {
     this._viewer = new PhoneViewer({
       element: this._element.querySelector('[data-component="phone-viewer"]'),
+      onBackClicked: () => {
+        this._viewer.hide();
+        this._catalog.show();
+      },
+      onAddToCartClicked: () => {},
     })
   }
 

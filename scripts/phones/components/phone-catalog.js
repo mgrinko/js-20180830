@@ -21,7 +21,7 @@ export default class PhoneCatalog extends Component {
       return;
     }
 
-    this._onPhoneSelected(phoneElement.dataset.phoneId)
+    this._onPhoneSelected(phoneElement.dataset.phoneId);
   }
 
   _render() {
