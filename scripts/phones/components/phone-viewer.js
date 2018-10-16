@@ -1,6 +1,8 @@
 import Component from '../../component.js'
+import Cart from './cart.js';
+import cartStore from './store.js';
 
-export default class PhoneViewer extends Component{
+export default class PhoneViewer extends Component {
   constructor(props) {
     let {
       element = null,
@@ -60,6 +62,11 @@ export default class PhoneViewer extends Component{
 
   _handleAddToCartClick(event) {
     if ( event.target.closest('[data-button="addToCart"]') ) {
+      let {
+        id: phoneId = '',
+      } = this._phone;
+
+      cartStore.addItem(phoneId);
       this._onAddToCartClicked();
     }
     return;

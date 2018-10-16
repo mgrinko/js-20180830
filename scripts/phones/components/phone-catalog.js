@@ -1,27 +1,47 @@
-import Component from '../../component.js'
+import Component from '../../component.js';
+import Cart from './cart.js';
+import cartStore from './store.js';
 
 export default class PhoneCatalog extends Component {
-  constructor({ element, phones, onPhoneSelected }) {
+  constructor(props) {
+    let {
+      element,
+      phones,
+      onPhoneSelected,
+      onAddToCartClicked,
+    } = props;
+
     super({ element });
 
     this._phones = phones;
     this._onPhoneSelected = onPhoneSelected;
+    this._onAddToCartClicked = onAddToCartClicked;
 
     this._render();
 
     this._element.addEventListener('click', (event) => {
-      this._onPhoneClick(event);
+      if ( event.target.closest('[data-button="addToCart"]') ) {
+        this._handleAddToCartClick(event);
+        return;
+      }
+
+      this._handlePhoneClick(event);
     });
   }
 
-  _onPhoneClick (event) {
+  _handlePhoneClick(event) {
     let phoneElement = event.target.closest('[data-element="phone"]');
 
-    if (!phoneElement) {
-      return;
-    }
-
+    if (!phoneElement) return;
     this._onPhoneSelected(phoneElement.dataset.phoneId);
+  }
+
+  _handleAddToCartClick(event) {
+    let phoneElement = event.target.closest('[data-element="phone"]');
+    let phoneId = phoneElement.dataset.phoneId || null;
+
+    cartStore.addItem(phoneId);
+    this._onAddToCartClicked()
   }
 
   _render() {
@@ -37,7 +57,10 @@ export default class PhoneCatalog extends Component {
               <img alt="${ phone.name }" src="${ phone.imageUrl }">
             </a>
   
-            <div class="phones__btn-buy-wrapper">
+            <div
+              data-button='addToCart'
+              class="phones__btn-buy-wrapper"
+            >
               <a class="btn btn-success">
                 Add
               </a>

@@ -1,29 +1,34 @@
 import PhoneCatalog from './components/phone-catalog.js';
 import PhoneViewer from './components/phone-viewer.js';
 import PhoneService from './services/phone-service.js';
+import Cart from './components/cart.js';
 
 export default class PhonesPage {
   constructor({ element }) {
     this._element = element;
     this._viewer = null;
     this._catalog = null;
+    this._cart = null;
 
     this._render();
 
     this._initCatalog();
     this._initViewer();
+    this._initCart();
   }
 
   _initCatalog () {
     this._catalog = new PhoneCatalog({
       element: this._element.querySelector('[data-component="phone-catalog"]'),
       phones: PhoneService.getPhones(),
-
       onPhoneSelected: (phoneId) => {
         let phoneDetails = PhoneService.getPhone(phoneId);
 
         this._catalog.hide();
         this._viewer.show(phoneDetails);
+      },
+      onAddToCartClicked: () => {
+        this._initCart();
       },
     });
   }
@@ -36,8 +41,14 @@ export default class PhonesPage {
         this._catalog.show();
       },
       onAddToCartClicked: () => {
-        console.log("---", "Add to cart");
+        this._initCart();
       },
+    })
+  }
+
+  _initCart() {
+    this._cart = new Cart({
+      element: this._element.querySelector('[data-component="cart"]'),
     })
   }
 
@@ -62,13 +73,7 @@ export default class PhonesPage {
             </p>
           </section>
     
-          <section>
-            <p>Shopping Cart</p>
-            <ul>
-              <li>Phone 1</li>
-              <li>Phone 2</li>
-              <li>Phone 3</li>
-            </ul>
+          <section data-component="cart">
           </section>
         </div>
     
