@@ -15,6 +15,7 @@ export default class PhoneViewer extends Component{
 
     this._onBackClicked = onBackClicked;
     this._onAddToCartClicked = onAddToCartClicked;
+    this._handleEscClick = this._handleEscClick.bind(this);
 
     this._element.addEventListener('click', (event) => {
       this._handleBackClick(event);
@@ -28,9 +29,31 @@ export default class PhoneViewer extends Component{
     this._phone && this._render();
   }
 
+  _mountEventListeners() {
+    window.addEventListener('keyup', this._handleEscClick);
+  }
+
+  _unmountEventListeners() {
+    window.removeEventListener('keyup', this._handleEscClick);
+  }
+
+  _handleEscClick(event) {
+    let ESC_CHAR_CODE = 27;
+    if ( event && 
+      event.which && 
+      event.keyCode && 
+      ( event.keyCode === ESC_CHAR_CODE )
+    ) {
+      this._onBackClicked();
+      this._unmountEventListeners();
+    }
+    return;
+  }
+
   _handleBackClick(event) {
     if ( event.target.closest('[data-button="backButton"]') ) {
       this._onBackClicked();
+      this._unmountEventListeners();
     }
     return;
   }
@@ -68,6 +91,8 @@ export default class PhoneViewer extends Component{
       name: phoneName = '',
       snippet: phoneSnippet = '',
     } = this._phone;
+
+    this._mountEventListeners();
 
     this._element && ( this._element.innerHTML = `
       <img class="phone" src="${ phoneMainImageUrl }">
