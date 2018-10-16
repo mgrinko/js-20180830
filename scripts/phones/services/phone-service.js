@@ -220,8 +220,44 @@ const phoneDetails = {
 };
 
 const PhoneService = {
+  lastPhones: {},
+
+  sortPhones(option) {
+    switch(option) {
+      case 'name':
+        this.lastPhones = this.lastPhones.sort((phone1, phone2) => {
+          let name1 = (phone1.name + '').toLowerCase();
+          let name2 = (phone2.name + '').toLowerCase();
+
+          if ( name1 < name2 ) {
+            return -1;
+          } else if ( name1 > name2 ) {
+            return 1;
+          } else return 0;
+        })
+        break;
+      case 'age':
+        this.lastPhones = this.lastPhones.sort((phone1, phone2) => {
+          let age1 = phone1.age;
+          let age2 = phone2.age;
+
+          if ( age1 < age2 ) {
+            return -1;
+          } else if ( age1 > age2 ) {
+            return 1;
+          } else return 0;
+        })
+        break;
+      default:
+        break;
+    }
+
+    return this.lastPhones;
+  },
+
   getPhones() {
-    return phonesFromServer;
+    this.lastPhones = phonesFromServer;
+    return this.lastPhones;
   },
 
   getPhone(phoneId) {
@@ -240,7 +276,9 @@ const PhoneService = {
     }
 
     return requiredPhone;
-  }
+  },
+
+
 };
 
 export default PhoneService;

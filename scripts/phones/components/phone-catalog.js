@@ -17,7 +17,7 @@ export default class PhoneCatalog extends Component {
     this._onPhoneSelected = onPhoneSelected;
     this._onAddToCartClicked = onAddToCartClicked;
 
-    this._render();
+    this.render();
 
     this._element.addEventListener('click', (event) => {
       if ( event.target.closest('[data-button="addToCart"]') ) {
@@ -44,7 +44,7 @@ export default class PhoneCatalog extends Component {
     this._onAddToCartClicked()
   }
 
-  _render() {
+  render() {
     this._element.innerHTML = `
       <ul class="phones">
         ${ this._phones.map(phone => `

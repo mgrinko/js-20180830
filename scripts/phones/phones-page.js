@@ -1,6 +1,7 @@
 import PhoneCatalog from './components/phone-catalog.js';
 import PhoneViewer from './components/phone-viewer.js';
 import PhoneService from './services/phone-service.js';
+import PhoneFilter from './components/phone-filter.js';
 import Cart from './components/cart.js';
 
 export default class PhonesPage {
@@ -9,18 +10,22 @@ export default class PhonesPage {
     this._viewer = null;
     this._catalog = null;
     this._cart = null;
+    this._filter = null;
+
+    this._phones = PhoneService.getPhones();
 
     this._render();
 
     this._initCatalog();
     this._initViewer();
     this._initCart();
+    this._initFilter();
   }
 
   _initCatalog () {
     this._catalog = new PhoneCatalog({
       element: this._element.querySelector('[data-component="phone-catalog"]'),
-      phones: PhoneService.getPhones(),
+      phones: this._phones,
       onPhoneSelected: (phoneId) => {
         let phoneDetails = PhoneService.getPhone(phoneId);
 
@@ -52,6 +57,16 @@ export default class PhonesPage {
     })
   }
 
+  _initFilter() {
+    this._filter = new PhoneFilter({
+      element: this._element.querySelector('[data-select-sort="phones"]'),
+      onOptionChange: (option) => {
+        this._phones = PhoneService.sortPhones(option);
+        this._catalog.render();
+      }
+    })
+  }
+
   _render() {
     this._element.innerHTML = `
       <div class="row">
@@ -66,10 +81,8 @@ export default class PhonesPage {
     
             <p>
               Sort by:
-              <select>
-                <option value="name">Alphabetical</option>
-                <option value="age">Newest</option>
-              </select>
+              <section data-select-sort='phones'>
+              </section>
             </p>
           </section>
     
