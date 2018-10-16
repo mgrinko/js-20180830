@@ -9,6 +9,7 @@ export default class PhoneCatalog extends Component {
       phones,
       onPhoneSelected,
       onAddToCartClicked,
+      phoneFilter,
     } = props;
 
     super({ element });
@@ -16,6 +17,7 @@ export default class PhoneCatalog extends Component {
     this._phones = phones;
     this._onPhoneSelected = onPhoneSelected;
     this._onAddToCartClicked = onAddToCartClicked;
+    this._phoneFilter = phoneFilter;
 
     this.render();
 
@@ -47,7 +49,7 @@ export default class PhoneCatalog extends Component {
   render() {
     this._element.innerHTML = `
       <ul class="phones">
-        ${ this._phones.map(phone => `
+        ${ this._phoneFilter(this._phones).map(phone => `
           <li
             class="thumbnail"
             data-element="phone"

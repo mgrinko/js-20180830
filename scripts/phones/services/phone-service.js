@@ -220,12 +220,12 @@ const phoneDetails = {
 };
 
 const PhoneService = {
-  lastPhones: {},
+  phonesFromServer: {},
 
   sortPhones(option) {
     switch(option) {
       case 'name':
-        this.lastPhones = this.lastPhones.sort((phone1, phone2) => {
+        this.phonesFromServer = this.phonesFromServer.sort((phone1, phone2) => {
           let name1 = (phone1.name + '').toLowerCase();
           let name2 = (phone2.name + '').toLowerCase();
 
@@ -237,7 +237,7 @@ const PhoneService = {
         })
         break;
       case 'age':
-        this.lastPhones = this.lastPhones.sort((phone1, phone2) => {
+        this.phonesFromServer = this.phonesFromServer.sort((phone1, phone2) => {
           let age1 = phone1.age;
           let age2 = phone2.age;
 
@@ -252,12 +252,12 @@ const PhoneService = {
         break;
     }
 
-    return this.lastPhones;
+    return this.phonesFromServer;
   },
 
   getPhones() {
-    this.lastPhones = phonesFromServer;
-    return this.lastPhones;
+    this.phonesFromServer = phonesFromServer;
+    return this.phonesFromServer;
   },
 
   getPhone(phoneId) {
