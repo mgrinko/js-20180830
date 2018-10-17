@@ -9,7 +9,6 @@ export default class PhoneCatalog extends Component {
       phones,
       onPhoneSelected,
       onAddToCartClicked,
-      phoneFilter,
     } = props;
 
     super({ element });

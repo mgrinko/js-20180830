@@ -14,7 +14,6 @@ export default class PhonesPage {
     this._cart = null;
     this._filter = null;
     this._search = null;
-    this._filterFunction = () => true;
 
     this._phones = phonesStore.getItems();
     this._isPhonesLoaded = false;
@@ -50,9 +49,6 @@ export default class PhonesPage {
       },
       onAddToCartClicked: () => {
         this._cart.render();
-      },
-      phoneFilter: (phones) => {
-        return phones.filter((phone) => this._filterFunction(phone))
       },
     });
   }
