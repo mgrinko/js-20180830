@@ -1,6 +1,7 @@
 import PhoneCatalog from './components/phone-catalog.js';
 import PhoneViewer from './components/phone-viewer.js';
 import PhoneService from './services/phone-service.js';
+import { phonesStore } from './components/store.js';
 import PhoneFilter from './components/phone-filter.js';
 import PhoneSearch from './components/phone-search.js';
 import Cart from './components/cart.js';
@@ -15,23 +16,34 @@ export default class PhonesPage {
     this._search = null;
     this._filterFunction = () => true;
 
-    this._phones = PhoneService.getPhones();
+    this._phones = phonesStore.getItems();
+    this._isPhonesLoaded = false;
 
     this._render();
 
-    this._initCatalog();
+    this._initPhonesStore();
     this._initViewer();
     this._initCart();
     this._initFilter();
     this._initSearch();
   }
 
-  _initCatalog () {
+  _initPhonesStore() {
+    // Network delay
+    setTimeout(() => {
+      phonesStore.initStore(PhoneService.getPhones());
+      this._phones = phonesStore.getItems();
+      this._isPhonesLoaded = true;
+      this._initCatalog();
+    }, 4000)
+  }
+
+  _initCatalog() {
     this._catalog = new PhoneCatalog({
       element: this._element.querySelector('[data-component="phone-catalog"]'),
       phones: this._phones,
       onPhoneSelected: (phoneId) => {
-        let phoneDetails = PhoneService.getPhone(phoneId);
+        let phoneDetails = phonesStore.getPhone(phoneId);
 
         this._catalog.hide();
         this._viewer.show(phoneDetails);
@@ -68,8 +80,11 @@ export default class PhonesPage {
     this._filter = new PhoneFilter({
       element: this._element.querySelector('[data-select-sort="phones"]'),
       onOptionChange: (option) => {
-        this._phones = PhoneService.sortPhones(option);
-        this._catalog.render();
+        this._phones = phonesStore.sortPhones(option);
+
+        this._isPhonesLoaded && 
+        ( this._catalog.setPhones(this._phones) || 
+        this._catalog.render() )
       }
     })
   }
@@ -78,15 +93,11 @@ export default class PhonesPage {
     this._search = new PhoneSearch({
       element: this._element.querySelector('[data-phone-search]'),
       onInputChange: (value) => {
-        this._filterFunction = (function(value) {
-          return function(phone) {
-            if ( ( (phone.name + '').toLowerCase().includes((value + '').toLowerCase()) ) ) {
-              return true;
-            }
-            return false;
-          }
-        })(value);
-        this._catalog.render();
+        this._phones = phonesStore.filterPhones(value);
+
+        this._isPhonesLoaded && 
+        ( this._catalog.setPhones(this._phones) || 
+        this._catalog.render() )
       },
     })
   }

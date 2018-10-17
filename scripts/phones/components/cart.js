@@ -3,9 +3,7 @@ import cartStore from './store.js';
 
 export default class Cart extends Component {
   constructor(props) {
-    let {
-      element
-    } = props;
+    let { element } = props;
     super(element);
 
     this._element = element;
@@ -20,43 +18,41 @@ export default class Cart extends Component {
   }
 
   _removeItem(event) {
-    if ( event.target.dataset.action === 'deleteCartItem' ) {
+    if ( event.target.closest('[data-action="deleteCartItem"]') ) {
       let item = event.target.dataset.item;
       cartStore.removeItem(item);
       this.render();
     }
   }
 
-  _renderCart() {
+  _renderCartItems() {
     let cartItems = cartStore.getItems();
-    let renderCartItems = function() {
-      if ( cartItems.length > 0 ) {
-        cartItems = cartItems.map((item) => (`
-          <li>
-            <span 
-              data-element="cartItem"
-            >
-              ${ item }
-            </span>
-            <span 
-              class="cart__button-delete"
-              data-action='deleteCartItem'
-              data-item=${ item }
-            >
-              Delete
-            </span>
-          </li>
-        `)).join('');
+    if ( cartItems.length === 0 ) return '';
 
-        return `<ul>${ cartItems }</ul>`;
-      }
+    cartItems = cartItems.map((item) => (`
+      <li>
+        <span 
+          data-element="cartItem"
+        >
+          ${ item }
+        </span>
+        <span 
+          class="cart__button-delete"
+          data-action='deleteCartItem'
+          data-item=${ item }
+        >
+          Delete
+        </span>
+      </li>
+    `)).join('');
 
-      return '';
-    }
+    return `<ul>${ cartItems }</ul>`;
+  }
 
+  _renderCart() {
     return (`
       <p>Shopping Cart</p>
-      ${ renderCartItems() }
+      ${ this._renderCartItems() }
     `)
   }
 

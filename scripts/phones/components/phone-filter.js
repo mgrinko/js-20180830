@@ -14,7 +14,7 @@ export default class PhoneFilter {
 
   _mountEventListeners() {
     this._element.addEventListener('click', (event) => {
-      if ( event && event.target.value ) {
+      if ( event.target.value ) {
         let nextOption = event.target.value;
         this._filterChoice = nextOption;
         this._onOptionChange(nextOption);
