@@ -14,6 +14,10 @@ export default class PhonesPage{
         new PhoneCatalog({
           element: this._element.querySelector('[data-component="phone-catalog"]'),
           phones: PhoneService.getPhones(),
+          // св-во с функцией
+          onPhoneSelected: (phoneId) => {
+            console.log(phoneId);
+          }
         })
 
     }
