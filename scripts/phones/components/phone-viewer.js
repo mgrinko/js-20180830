@@ -1,11 +1,15 @@
 import Component from '../../component.js'
 
 export default class PhoneViewer extends Component{
-  constructor({ element }) {
+  constructor({ element, onBackClicked }) {
     super({ element });
+    this._onBackClicked = onBackClicked;
     this.elelemt = element;
     this.elelemt.addEventListener('click', this._onImageClick)
+    this._element.addEventListener('click', this._handleBackClick.bind(this))
+      console.log(  this._onBackClicked)
   }
+
 
   show(phoneDetails) {
     this._phone = phoneDetails;
@@ -13,6 +17,14 @@ export default class PhoneViewer extends Component{
     this._render();
   }
 
+
+    _handleBackClick(event) {
+        if ( event.target.tagName === 'BUTTON') {
+            this._onBackClicked();
+           // this._unmountEventListeners();
+        }
+        return;
+    }
 
     _onImageClick(event) {
     let target = event.target;
