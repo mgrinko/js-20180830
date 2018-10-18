@@ -1,3 +1,4 @@
+# js-20180830
 ## Учебный проект phones-store
 
 * Студент: [Николай Николаев](http://learn.javascript.ru/profile/nki)
