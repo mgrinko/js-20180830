@@ -4,8 +4,8 @@ export default class PhoneViewer extends Component{
   constructor({ element, onBackClicked }) {
     super({ element });
     this._onBackClicked = onBackClicked;
-    this.elelemt = element;
-    this.elelemt.addEventListener('click', this._onImageClick);
+    this._element = element;
+    this._element.addEventListener('click', this._onImageClick);
     this._element.addEventListener('click', this._handleBackClick.bind(this));
   }
 
@@ -14,7 +14,7 @@ export default class PhoneViewer extends Component{
     this._phone = phoneDetails;
     this._render();
   }
-  
+
     _handleBackClick(event) {
         if ( event.target.tagName === 'BUTTON') {
             this._onBackClicked();
