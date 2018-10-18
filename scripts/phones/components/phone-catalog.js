@@ -1,9 +1,14 @@
+import Component from "../../component.js";
+
 'use strict'
 
-export default class PhoneCatalog{
+export default class PhoneCatalog extends Component{
 
     constructor({element, phones, onPhoneSelected}) {
-        this._element = element;
+        //в объекте создается св-во element со значением из переменной element
+        super({element: element});
+
+        // this._element = element; -> происходит в родительском классе
         this._phones = phones;
         this._onPhoneSelected = onPhoneSelected;
 

@@ -1,6 +1,7 @@
 
 import PhoneService from './services/phone-service.js';
 import PhoneCatalog from './components/phone-catalog.js';
+import PhoneViewer from './components/phones-viewer.js';
 
 // это компонент, управляющий страницей телефона
 'use strict'
@@ -11,15 +12,34 @@ export default class PhonesPage{
         this._element = element;
         this._render();
 
-        new PhoneCatalog({
-          element: this._element.querySelector('[data-component="phone-catalog"]'),
-          phones: PhoneService.getPhones(),
-          // св-во с функцией
-          onPhoneSelected: (phoneId) => {
-            console.log(phoneId);
-          }
-        })
+        this._initCatalog();
+        this._initViewer();
 
+    }
+
+    _initCatalog() {
+
+      this._catalog = new PhoneCatalog({
+        element: this._element.querySelector('[data-component="phone-catalog"]'),
+        phones: PhoneService.getPhones(),
+
+        // св-во с функцией
+        onPhoneSelected: (phoneId) => {
+          let phoneDetailts = PhoneService.getPhone(phoneId);
+
+          // при выборе телеф-на прятать каталог
+          this._catalog.hide();
+          this._viewer.show(phoneDetailts);
+          console.log(phoneId);
+        }
+      })
+
+    }
+
+    _initViewer() {
+      this._viewer = new PhoneViewer({
+        element: this._element.querySelector(['[data-component="phone-viewer"]']),
+      })
     }
 
     _render() {
@@ -56,6 +76,7 @@ export default class PhonesPage{
         <!--PHONES CATALOG-->
         <div class="col-md-10">
           <div data-component="phone-catalog"></div>
+          <div data-component="phone-viewer"></div>
         </div>
   
        
