@@ -22,6 +22,7 @@ export default class PhonesPage {
 
         this._catalog.hide();
         this._viewer.show(phoneDetails);
+        this._viewer._element.classList.remove("js-hidden");
       },
     });
   }
@@ -29,6 +30,12 @@ export default class PhonesPage {
   _initViewer() {
     this._viewer = new PhoneViewer({
       element: this._element.querySelector('[data-component="phone-viewer"]'),
+        
+      onBackToCatalog: () => {
+        window.history.back();
+        this._catalog._element.classList.remove("js-hidden")
+        this._viewer.hide();
+      },
     })
   }
 
