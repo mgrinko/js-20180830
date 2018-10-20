@@ -10,8 +10,7 @@ export default class PhoneCatalog extends Component{
 
         // this._element = element; -> происходит в родительском классе
         this._phones = phones;
-        this._onPhoneSelected = onPhoneSelected;
-
+        
         // onPhoneSelected - функция, вызывается каждый раз, когда каждый раз происходит клик на телефоне
         this._onPhoneSelected = onPhoneSelected;
 
