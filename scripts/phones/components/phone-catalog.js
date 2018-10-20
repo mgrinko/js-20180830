@@ -4,7 +4,8 @@ import Component from "../../component.js";
 
 export default class PhoneCatalog extends Component{
 
-    constructor({element, phones, onPhoneSelected}) {
+    //onPhoneSelected = ()=> {} значение по умолчанию
+    constructor({element, phones}) {
         //в объекте создается св-во element со значением из переменной element
         super({element: element});
 
@@ -12,13 +13,34 @@ export default class PhoneCatalog extends Component{
         this._phones = phones;
         
         // onPhoneSelected - функция, вызывается каждый раз, когда каждый раз происходит клик на телефоне
-        this._onPhoneSelected = onPhoneSelected;
+        // сохраняем ее во внутреннее св-во каталога
+        // this._onPhoneSelected = onPhoneSelected;
 
         this._render();
 
         // => чтобы this не был div а li
         //event нужен только для фнкции-стрелки. раньше addEventListener создавал ее сам, но когда есть =>, надо передавать event вручную
-        this._element.addEventListener('click', (event) => this._onPhoneClick(event));
+        // при выборе телефона
+        // СТАНДАРТНЫЕ события можно слушать только внутри компонента
+        this._element.addEventListener('click', (event) => 
+          this._onPhoneClick(event));
+    }
+
+    // создадим публичный метод, на который можно подписываться
+    subscribe(eventName, callback) {
+      this._element.addEventListener(eventName, (event) => {
+        // передаются детали из emit
+        callback(event.detail);
+      });
+    }
+    
+    //метод для генерации событий
+    emit(eventName, data) {
+      const event = new CustomEvent(eventName, {
+        detail: data
+      });
+      //событие генерируется на _element
+      this._element.dispatchEvent(event);
     }
 
     _onPhoneClick(event) {
@@ -27,7 +49,13 @@ export default class PhoneCatalog extends Component{
         return;
       }
       // сообщаем странице, с каким id выбран телефон. id телефона в кач-ве параметра
-      this._onPhoneSelected(phoneElement.dataset.phoneId);
+      // this._onPhoneSelected(phoneElement.dataset.phoneId);
+
+      // при вызове: на корневом эл-те каталога сгенерируется событие: phoneSelected
+      // когда вызывается emit, на самом деле на корневом эл-те вызывается eventName, а в кач-ве деталей передаются наши данные
+      this.emit('phoneSelected', phoneElement.dataset.phoneId)
+
+
     }
 
     _render() {

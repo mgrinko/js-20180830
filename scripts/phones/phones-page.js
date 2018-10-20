@@ -26,17 +26,49 @@ export default class PhonesPage{
         element: this._element.querySelector('[data-component="phone-catalog"]'),
         phones: PhoneService.getPhones(),
 
-        // св-во с функцией
-        onPhoneSelected: (phoneId) => {
-          let phoneDetailts = PhoneService.getPhone(phoneId);
+        // убираем ее отсюда, чтобы иметь возможность его добавить, снять, с любой удобный момент, смотри *
+        
+        // св-во с функцией, callback, оно все время срабатывает
+        // onPhoneSelected: (phoneId) => {
+        //   let phoneDetailts = PhoneService.getPhone(phoneId);
 
-          // при выборе телеф-на прятать каталог
-          this._catalog.hide();
-          this._viewer.show(phoneDetailts);
-          console.log(phoneId);
-        }
+        //   // при выборе телеф-на прятать каталог
+        //   this._catalog.hide();
+        //   this._viewer.show(phoneDetailts);
+        //   console.log(phoneId);
+        // }
+
       })
 
+      // пока так работатть не будет тк _catalog это не DOM эл-т а JS объект
+      // this._catalog.addEventListener('phoneSelected', () => {
+      //   (phoneId) => {
+      //       let phoneDetailts = PhoneService.getPhone(phoneId);
+  
+      //       // при выборе телеф-на прятать каталог
+      //       this._catalog.hide();
+      //       this._viewer.show(phoneDetailts);
+      //       console.log(phoneId);
+      //     }
+      // })
+
+      // а так будет тк у _catalog есть _element
+      // тогда будут слушатся события, происходящие на КОРНЕВОМ ЭЛ-ТЕ каталога
+      // нестандартные события генерируются у нового каталога
+      // !! но так делать _catalog._element НЕЛЬЗЯ
+      // this._catalog._element.addEventListener('phoneSelected', () => {
+      //   (phoneId) => {
+      //       // ...
+      //     }
+      // })
+
+      // * вместо того, чтобы делать то, что было выше, можно просто на событие в каталоге подписаться
+      // чтобы каталог умел генерировать свои собственные события, например кастомное событие phoneSelected
+      this._catalog.subscribe('phoneSelected', (event) => {
+          let phoneDetailts = PhoneService.getPhone(phoneId);
+          this._catalog.hide();
+          this._viewer.show(phoneDetailts);
+      });
     }
 
     _initViewer() {
