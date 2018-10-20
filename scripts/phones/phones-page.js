@@ -1,7 +1,8 @@
-
 import PhoneService from './services/phone-service.js';
 import PhoneCatalog from './components/phone-catalog.js';
 import PhoneViewer from './components/phones-viewer.js';
+import ShoppingCart from './components/shopping-cart.js';
+import PhonesFilter from './components/phones-filter.js';
 
 // это компонент, управляющий страницей телефона
 'use strict'
@@ -15,6 +16,8 @@ export default class PhonesPage{
         this._initCatalog();
         this._initViewer();
 
+        this._initShoppingCart();
+        this._initFilters();
     }
 
     _initCatalog() {
@@ -42,44 +45,42 @@ export default class PhonesPage{
       })
     }
 
+    _initFilters() {
+      this._filter = new PhonesFilter({
+        element: this._element.querySelector('[data-component="phones-filter"]'),
+      });
+    }
+
+    _initShoppingCart() {
+      this._shoppingCart = new ShoppingCart({
+        element: this._element.querySelector('[data-component="shopping-cart"]'),
+      });
+    }
+
     _render() {
         this._element.innerHTML = `
-        <div class="row"></div>
-
-        <!--Sidebar-->
-        <div class="col-md-2">
-          <section>
-            <p>
-              Search:
-              <input>
-            </p>
-  
-            <p>
-              Sort by:
-              <select>
-                <option value="name">Alphabetical</option>
-                <option value="age">Newest</option>
-              </select>
-            </p>
-          </section>
-  
-          <section>
-            <p>Shopping Cart</p>
-            <ul>
-              <li>Phone 1</li>
-              <li>Phone 2</li>
-              <li>Phone 3</li>
-            </ul>
-          </section>
+        <div class="container-fluid">
+        <div class="row">
+      
+          <!--Sidebar-->
+          <div class="col-md-2">
+            <section>
+              <div data-component="phones-filter"></div>
+            </section>
+      
+            <section>
+              <div data-component="shopping-cart"></div>
+            </section>
+          </div>
+      
+          <!--Main content-->
+          <div class="col-md-10">
+            <div data-component="phone-catalog"></div>
+            <!-- по умолчанию class="js-hidden", viewer не отображается -->
+            <div data-component="phone-viewer" class="js-hidden"></div>
+          </div>
         </div>
-
-        <!--PHONES CATALOG-->
-        <div class="col-md-10">
-          <div data-component="phone-catalog"></div>
-          <div data-component="phone-viewer"></div>
-        </div>
-  
-       
+      </div>
         
         `;
     }

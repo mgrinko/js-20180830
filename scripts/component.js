@@ -15,4 +15,14 @@ export default class Component{
     show() {
         this._element.classList.remove(CLASS_HIDDEN);
     }
+
+    _on(eventName, elementName, callback) {
+        this._element.addEventListener(eventName, (event) => {
+          let delegateTarget = event.target.closest(`[data-element="${elementName}"]`);
+           if (!delegateTarget) {
+            return;
+          }
+           callback(event);
+        });
+    }
 }
