@@ -19,6 +19,10 @@ export default class ShoppingCart extends Component {
     this._on('click', 'button-remove', (event) => {
       this.removeItem(event.target.dataset.item);
     });
+
+    this._on('click', 'button-remove', (event) => {
+       this.removeItem(event.target.dataset.item)
+    }); 
   }
 
   addItem(item) {

@@ -28,14 +28,14 @@ export default class PhoneCatalog extends Component{
 
         // после создания _on, addEventListener стал не нужен
         this._on('click', 
-        '[data-element="phone-details-link"]',
+        'phone-details-link',
         (event) => {
           this._onPhoneDetailsLinkClick(event);
         }
         );
 
         this._on('click', 
-        '[data-element="add-button"]',
+        'add-button',
         (event) => {
           this._onAddClick(event);
         }

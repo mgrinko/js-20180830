@@ -46,10 +46,10 @@ export default class Component{
     // используется вместо addEventListener
     // он так же проверяет делегирование, тк здесь передается selector
     // по сути то же делает метод subscribe, только без делегирования
-    _on(eventName, selector, callback) {
+    _on(eventName, elementName, callback) {
         // this._element.addEventListener(eventName, callback); // по сути то же самое что и ниже
         this._element.addEventListener(eventName, (event) => {
-          let delegateTarget = event.target.closest(selector);
+          let delegateTarget = event.target.closest(`[data-element="${elementName}"]`);
           
           if(!delegateTarget) {
             return;

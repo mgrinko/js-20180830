@@ -9,11 +9,11 @@ export default class PhoneViewer extends Component{
         super({element: element});
         // this._element = element; -> происходит в родительском классе
 
-        this._on('click', '[data-element="back-button"]', () => {
+        this._on('click', 'back-button', () => {
           this.emit('back');
         });
 
-        this._on('click', '[data-element="add-button"]', () => {
+        this._on('click', 'add-button', () => {
           this.emit('add', this._phone.id);
         });
         
