@@ -30,42 +30,44 @@ export default class PhoneCatalog extends Component{
         this._on('click', 
         'phone-details-link',
         (event) => {
-          this._onPhoneDetailsLinkClick(event);
+          let phoneElement = event.target.closest('[data-element="phone"]');
+          this.emit('phoneSelected', phoneElement.dataset.phoneId)
         }
         );
 
         this._on('click', 
         'add-button',
         (event) => {
-          this._onAddClick(event);
+          let phoneElement = event.target.closest('[data-element="phone"]');
+          this.emit('add', phoneElement.dataset.phoneId)
         }
         );
 
     }
-    _onPhoneDetailsLinkClick(event) {
-      let phoneElement = event.target.closest('[data-element="phone"]');
-      // if(!phoneDetailsLink) {
-      //   return;
-      // }
-      // сообщаем странице, с каким id выбран телефон. id телефона в кач-ве параметра
-      // this._onPhoneSelected(phoneElement.dataset.phoneId);
+    // _onPhoneDetailsLinkClick(event) {
+    //   let phoneElement = event.target.closest('[data-element="phone"]');
+    //   // if(!phoneDetailsLink) {
+    //   //   return;
+    //   // }
+    //   // сообщаем странице, с каким id выбран телефон. id телефона в кач-ве параметра
+    //   // this._onPhoneSelected(phoneElement.dataset.phoneId);
 
-      // let phoneElement = event.target.closest('[data-element="phone-link"]');
-      // при вызове: на корневом эл-те каталога сгенерируется событие: phoneSelected
-      // когда вызывается emit, на самом деле на корневом эл-те вызывается eventName, а в кач-ве деталей передаются наши данные
-      this.emit('phoneSelected', phoneElement.dataset.phoneId)
+    //   // let phoneElement = event.target.closest('[data-element="phone-link"]');
+    //   // при вызове: на корневом эл-те каталога сгенерируется событие: phoneSelected
+    //   // когда вызывается emit, на самом деле на корневом эл-те вызывается eventName, а в кач-ве деталей передаются наши данные
+    //   this.emit('phoneSelected', phoneElement.dataset.phoneId)
 
-    }
+    // }
 
-    _onAddClick(event) {
-      // let addButton = event.target.closest('[data-element="add-button"]');
-      // if(!addButton) {
-      //   return;
-      // }
-      let phoneElement = event.target.closest('[data-element="phone"]');
+    // _onAddClick(event) {
+    //   // let addButton = event.target.closest('[data-element="add-button"]');
+    //   // if(!addButton) {
+    //   //   return;
+    //   // }
+    //   let phoneElement = event.target.closest('[data-element="phone"]');
       
-      this.emit('add', phoneElement.dataset.phoneId)
-    }
+    //   this.emit('add', phoneElement.dataset.phoneId)
+    // }
 
     _render() {
         this._element.innerHTML = `
