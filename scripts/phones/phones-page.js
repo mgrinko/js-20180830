@@ -59,6 +59,15 @@ export default class PhonesPage {
     this._filter = new PhonesFilter({
       element: this._element.querySelector('[data-component="phones-filter"]'),
     });
+
+    this._filter.subscribe('sort', (sortDir) => {
+      this._catalog.sort(sortDir);
+    });
+
+    this._filter.subscribe('filter', (searchStr) => {
+      console.log(searchStr);
+      this._catalog.filter(searchStr);
+    });
   }
 
   _render() {
