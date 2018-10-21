@@ -22,40 +22,49 @@ export default class PhoneCatalog extends Component{
         //event нужен только для фнкции-стрелки. раньше addEventListener создавал ее сам, но когда есть =>, надо передавать event вручную
         // при выборе телефона
         // СТАНДАРТНЫЕ события можно слушать только внутри компонента
-        this._element.addEventListener('click', (event) => 
-          this._onPhoneClick(event));
-    }
+        // this._element.addEventListener('click', (event) => {
+        //   this._onPhoneDetailsLinkClick(event);
+        // });
 
-    // создадим публичный метод, на который можно подписываться
-    subscribe(eventName, callback) {
-      this._element.addEventListener(eventName, (event) => {
-        // передаются детали из emit
-        callback(event.detail);
-      });
-    }
-    
-    //метод для генерации событий
-    emit(eventName, data) {
-      const event = new CustomEvent(eventName, {
-        detail: data
-      });
-      //событие генерируется на _element
-      this._element.dispatchEvent(event);
-    }
+        // после создания _on, addEventListener стал не нужен
+        this._on('click', 
+        '[data-element="phone-details-link"]',
+        (event) => {
+          this._onPhoneDetailsLinkClick(event);
+        }
+        );
 
-    _onPhoneClick(event) {
+        this._on('click', 
+        '[data-element="add-button"]',
+        (event) => {
+          this._onAddClick(event);
+        }
+        );
+
+    }
+    _onPhoneDetailsLinkClick(event) {
       let phoneElement = event.target.closest('[data-element="phone"]');
-      if(!phoneElement) {
-        return;
-      }
+      // if(!phoneDetailsLink) {
+      //   return;
+      // }
       // сообщаем странице, с каким id выбран телефон. id телефона в кач-ве параметра
       // this._onPhoneSelected(phoneElement.dataset.phoneId);
 
+      // let phoneElement = event.target.closest('[data-element="phone-link"]');
       // при вызове: на корневом эл-те каталога сгенерируется событие: phoneSelected
       // когда вызывается emit, на самом деле на корневом эл-те вызывается eventName, а в кач-ве деталей передаются наши данные
       this.emit('phoneSelected', phoneElement.dataset.phoneId)
 
+    }
 
+    _onAddClick(event) {
+      // let addButton = event.target.closest('[data-element="add-button"]');
+      // if(!addButton) {
+      //   return;
+      // }
+      let phoneElement = event.target.closest('[data-element="phone"]');
+      
+      this.emit('add', phoneElement.dataset.phoneId)
     }
 
     _render() {
@@ -70,17 +79,21 @@ export default class PhoneCatalog extends Component{
                   data-element="phone" 
                   data-phone-id="${ phone.id }"
                 >
-                    <a href="#!/phones/${ phone.id }" class="thumb">
+                    <a 
+                      data-element="phone-details-link" 
+                      href="#!/phones/${ phone.id }" class="thumb">
                       <img alt="${ phone.name }" src="${ phone.imageUrl }">
                     </a>
         
                     <div class="phones__btn-buy-wrapper">
-                      <a class="btn btn-success">
+                      <a class="btn btn-success" data-element="add-button">
                         Add
                       </a>
                     </div>
         
-                    <a href="#!/phones/${ phone.id }">${ phone.name }</a>
+                    <a 
+                    data-element="phone-details-link" 
+                    href="#!/phones/${ phone.id }">${ phone.name }</a>
                     <p>${ phone.snippet }</p>
                 </li>
 

@@ -36,7 +36,7 @@ export default class PhoneViewer extends Component{
       
           <h1>${ name }</h1>
       
-          <p>${ description }</p>
+          <p>${ description }</p >
       
           <ul class="phone-thumbs">
             ${ images.map(image => `

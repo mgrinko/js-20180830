@@ -64,10 +64,15 @@ export default class PhonesPage{
 
       // * вместо того, чтобы делать то, что было выше, можно просто на событие в каталоге подписаться
       // чтобы каталог умел генерировать свои собственные события, например кастомное событие phoneSelected
-      this._catalog.subscribe('phoneSelected', (event) => {
-          let phoneDetailts = PhoneService.getPhone(phoneId);
-          this._catalog.hide();
-          this._viewer.show(phoneDetailts);
+      this._catalog.subscribe('phoneSelected', (phoneId) => {
+        let phoneDetails = PhoneService.getPhone(phoneId);
+  
+        this._catalog.hide();
+        this._viewer.show(phoneDetails);
+      });
+  
+      this._catalog.subscribe('add', (phoneId) => {
+        this._shoppingCart.addItem(phoneId);
       });
     }
 
