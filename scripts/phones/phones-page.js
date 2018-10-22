@@ -47,6 +47,10 @@ export default class PhonesPage {
       this._viewer.hide();
       this._catalog.show();
     });
+
+    this._viewer.subscribe('change-photo', (image) => {
+      this._viewer.imageGallery(image)
+    })
   }
 
   _initShoppingCart() {
