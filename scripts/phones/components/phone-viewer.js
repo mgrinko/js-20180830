@@ -1,7 +1,7 @@
 import Component from '../../component.js'
 
 export default class PhoneViewer extends Component{
-  constructor({ element }) {
+  constructor({ element, ...rest }) {
     super({ element });
 
     this._on('click', 'back-button', () => {
@@ -13,8 +13,10 @@ export default class PhoneViewer extends Component{
     });
   }
 
-  show(phoneDetails) {
+  show(phoneDetails, imageSrc) {
     this._phone = phoneDetails;
+    this._images = phoneDetails.images;
+    this._currentImage = imageSrc || phoneDetails.images[0];
     this._render();
 
     super.show();

@@ -35,9 +35,24 @@ export default class PhonesPage {
     });
   }
 
+  _loadPhonesFromCache() {
+    const {sortkey, query} =  this._filter.getKeys();
+
+    const phones = PhoneService.cachePhones
+        .filter(phone =>  phone.name.toLowerCase().includes(query.toLowerCase()) )
+        .sort( (phone1, phone2) => {
+          if (phone1[sortkey] < phone2[sortkey]) return -1;
+          if (phone2[sortkey] < phone1[sortkey]) return 1;
+          return 0;
+        });
+
+    this._catalog.show(phones);
+  }
+
   _loadPhonesFromServer() {
     PhoneService.getPhones((phones) => {
-      this._catalog.show(phones);
+      PhoneService.cachePhones = phones;
+      this._loadPhonesFromCache()
     });
   }
 
@@ -52,7 +67,7 @@ export default class PhonesPage {
 
     this._viewer.subscribe('back', () => {
       this._viewer.hide();
-      this._loadPhonesFromServer();
+      this._loadPhonesFromCache()
     });
   }
 
@@ -65,6 +80,20 @@ export default class PhonesPage {
   _initFilters() {
     this._filter = new PhonesFilter({
       element: this._element.querySelector('[data-component="phones-filter"]'),
+    });
+
+    this._filter.subscribe('sort', () => {
+      this._loadPhonesFromCache()
+    });
+
+    this._filter.subscribe('search', (e) => {
+      const {value} = e.target
+      if (value.length < 3) {
+        e.target.classList.add("error")
+      } else {
+        e.target.classList.remove("error");
+      }
+      this._loadPhonesFromCache()
     });
   }
 

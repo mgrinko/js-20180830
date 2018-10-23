@@ -12,6 +12,8 @@ const PhoneService = {
       successCallback: callback,
     });
   },
+
+  cachePhones: null,
 };
 
 export default PhoneService;
