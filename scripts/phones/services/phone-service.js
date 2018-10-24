@@ -1,9 +1,19 @@
-import HttpService from '../../http-service.js'
+import HttpService from '../../http-service.js';
 
 const PhoneService = {
-  getPhones(callback) {
+  getPhones(filters, callback) {
     HttpService.sendRequest('phones.json', {
-      successCallback: callback,
+      successCallback: (data) => {
+        const {phoneSearch, phonesSort} = filters;
+        
+        let dataFiltered = data.filter((phone) => phone.name.toLowerCase().includes(phoneSearch.toLowerCase()))
+                               .sort((phoneA, phoneB) => {
+                                  if (phoneA[phonesSort] > phoneB[phonesSort]) return 1;
+                                  if (phoneA[phonesSort] < phoneB[phonesSort]) return -1;
+                            });
+        
+        callback(dataFiltered);
+      },
     });
   },
 

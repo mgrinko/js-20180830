@@ -11,6 +11,23 @@ export default class PhoneViewer extends Component{
     this._on('click', 'add-button', () => {
       this.emit('add', this._phone.id);
     });
+
+    this._on('click', 'small-picture-phone', () => {
+      this.emit('changePicture', event.target.src);
+    });
+
+    this.subscribe('changePicture', (src) => {
+      this._changeBigPicture(src);
+    });
+  }
+
+  _changeBigPicture(src) {
+    let bigPicture = this._element.querySelector('[data-element="big-picture-phone"]');
+    
+    if (bigPicture.src === src) {
+      return;
+    } 
+    bigPicture.src = src;
   }
 
   show(phoneDetails) {
@@ -24,7 +41,7 @@ export default class PhoneViewer extends Component{
     const { images, name, description } = this._phone;
 
     this._element.innerHTML = `
-      <img class="phone" src="${ images[0] }">
+      <img data-element="big-picture-phone" class="phone" src="${ images[0] }">
 
       <button data-element="back-button">
         Back
@@ -41,7 +58,7 @@ export default class PhoneViewer extends Component{
       <ul class="phone-thumbs">
         ${ images.map(image => `
           <li>
-            <img src="${ image }">
+            <img data-element="small-picture-phone" src="${ image }">
           </li>
         `).join('')}
       </ul>
