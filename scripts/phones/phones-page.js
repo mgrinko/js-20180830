@@ -22,6 +22,8 @@ export default class PhonesPage {
     });
     
     this._filter.subscribe('initFilter', () => {
+      if(this._element.querySelector('[data-component="phone-catalog"]').classList.contains('js-hidden')) return;
+      
       this._loadPhonesFromServer(this._filter.initValue());
     });
   }
@@ -62,7 +64,7 @@ export default class PhonesPage {
 
     this._viewer.subscribe('back', () => {
       this._viewer.hide();
-      this._loadPhonesFromServer();
+      this._loadPhonesFromServer(this._filter.initValue());
     });
   }
 
