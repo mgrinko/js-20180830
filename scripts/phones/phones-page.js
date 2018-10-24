@@ -10,10 +10,20 @@ export default class PhonesPage {
 
     this._render();
 
+    this._initFilters();
     this._initCatalog();
     this._initViewer();
     this._initShoppingCart();
-    this._initFilters();
+  }
+
+  _initFilters() {
+    this._filter = new PhonesFilter({
+      element: this._element.querySelector('[data-component="phones-filter"]'),
+    });
+    
+    this._filter.subscribe('initFilter', () => {
+      this._loadPhonesFromServer(this._filter.initValue());
+    });
   }
 
   _initCatalog () {
@@ -21,7 +31,7 @@ export default class PhonesPage {
       element: this._element.querySelector('[data-component="phone-catalog"]'),
     });
 
-    this._loadPhonesFromServer();
+    this._loadPhonesFromServer(this._filter.initValue());
 
     this._catalog.subscribe('phoneSelected', (phoneId) => {
       PhoneService.getPhone(phoneId, (phoneDetails) => {
@@ -35,8 +45,8 @@ export default class PhonesPage {
     });
   }
 
-  _loadPhonesFromServer() {
-    PhoneService.getPhones((phones) => {
+  _loadPhonesFromServer(filters) {
+    PhoneService.getPhones(filters, (phones) => {
       this._catalog.show(phones);
     });
   }
@@ -59,12 +69,6 @@ export default class PhonesPage {
   _initShoppingCart() {
     this._shoppingCart = new ShoppingCart({
       element: this._element.querySelector('[data-component="shopping-cart"]'),
-    });
-  }
-
-  _initFilters() {
-    this._filter = new PhonesFilter({
-      element: this._element.querySelector('[data-component="phones-filter"]'),
     });
   }
 

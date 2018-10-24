@@ -5,7 +5,7 @@ const HttpService = {
   sendRequest(url, {
     method = 'GET',
     successCallback = () => {},
-    errorCallback = (error) => { console.error(error) },
+    errorCallback = (error) => { console.error(error); },
   }) {
     let xhr = new XMLHttpRequest();
 
