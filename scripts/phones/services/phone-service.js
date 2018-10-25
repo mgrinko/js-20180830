@@ -6,7 +6,7 @@ const PhoneService = {
   },
 
   getPhone(phoneId) {
-    return HttpService.sendRequest(`asasdasdphones/${phoneId}.json`);
+    return HttpService.sendRequest(`phones/${phoneId}.json`);
   },
 };
 

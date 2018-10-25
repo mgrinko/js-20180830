@@ -25,12 +25,9 @@ export default class PhonesPage {
 
     this._catalog.subscribe('phoneSelected', (phoneId) => {
       PhoneService.getPhone(phoneId)
-        // .then((phoneDetails) => {
-        //   this._catalog.hide();
-        //   this._viewer.show(phoneDetails);
-        // })
-        .catch((error) => {
-          console.warn(error);
+        .then((phoneDetails) => {
+          this._catalog.hide();
+          this._viewer.show(phoneDetails);
         });
     });
 
