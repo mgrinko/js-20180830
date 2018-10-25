@@ -8,18 +8,30 @@ const PhoneService = {
   getPhone(phoneId, callback) {
     let promise = this._sendRequest(`phones/${phoneId}.json`);
 
-    promise.then(callback);
+    // promise.then(callback);
+
+    promise.then((data) => {
+      console.log(data);
+    });
+
+    promise.then((data) => {
+      console.log(123);
+    });
   },
 
 
   _sendRequest(url) {
     let promise = {
+      _successCallbacks: [],
+
       then(successCallback) {
-        this.successCallback = successCallback;
+        this._successCallbacks.push(successCallback);
       },
 
       resolve(data) {
-        this.successCallback(data);
+        this._successCallbacks.forEach(callback => {
+          callback(data);
+        });
       }
     };
 
