@@ -24,9 +24,23 @@ export default class PhonesPage {
     this._loadPhonesFromServer();
 
     this._catalog.subscribe('phoneSelected', (phoneId) => {
-      PhoneService.getPhone(phoneId, (phoneDetails) => {
-        this._catalog.hide();
-        this._viewer.show(phoneDetails);
+      PhoneService.getPhone(phoneId)
+      .then((phoneDetails) => {
+        console.log(event)
+        if (event) {
+          return phoneDetails
+        }
+      })
+      .then((phoneDetails) => {
+        if (phoneDetails) {
+          this._catalog.subscribe('phoneSelectedConfirm', (phoneId) => {
+            this._catalog.hide();
+            this._viewer.show(phoneDetails);
+          });
+        }
+      })
+      .catch((error) => {
+        console.warn(error);
       });
     });
 
@@ -36,9 +50,10 @@ export default class PhonesPage {
   }
 
   _loadPhonesFromServer() {
-    PhoneService.getPhones((phones) => {
-      this._catalog.show(phones);
-    });
+    PhoneService.getPhones()
+      .then((phones) => {
+        this._catalog.show(phones);
+      });
   }
 
   _initViewer() {
