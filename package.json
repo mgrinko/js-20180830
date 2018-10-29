@@ -18,6 +18,15 @@
   },
   "homepage": "https://github.com/mgrinko/js-20180830#readme",
   "devDependencies": {
-    "node-static": "^0.7.11"
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "babel-loader": "^8.0.4",
+    "node-static": "^0.7.11",
+    "webpack": "^4.23.1",
+    "webpack-cli": "^3.1.2"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.1.2"
   }
 }
