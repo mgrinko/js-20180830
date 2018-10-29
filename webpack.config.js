@@ -23,6 +23,10 @@ module.exports = {
             plugins: ['@babel/plugin-transform-runtime'],
           }
         }
+      },
+      {
+        test: /\.hbs$/,
+        loader: "handlebars-loader"
       }
     ]
   }
