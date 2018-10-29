@@ -9,7 +9,7 @@ module.exports = {
   },
 
   devtool: 'source-map',
-  watch: true,
+  // watch: true,
 
   module: {
     rules: [
@@ -27,8 +27,17 @@ module.exports = {
       {
         test: /\.hbs$/,
         loader: "handlebars-loader"
+      },
+      {
+        test: /\.css$/,
+        use: [ 'style-loader', 'css-loader' ]
       }
     ]
+  },
+
+  devServer: {
+    contentBase: path.join(__dirname, 'public'),
+    port: 9000
   }
 };
 
