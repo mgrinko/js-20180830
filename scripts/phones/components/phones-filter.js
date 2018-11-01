@@ -1,10 +1,16 @@
 import Component from '../../component.js';
+import { debounce } from 'lodash';
 
 export default class PhoneFilters extends Component {
   constructor({ element }) {
     super({ element });
 
     this._render();
+
+    this._on('input', 'text-field', debounce(
+      (event) => { console.log(event.target.value);},
+      1000
+    ));
   }
 
   _render() {
@@ -12,6 +18,7 @@ export default class PhoneFilters extends Component {
       <p>
         Search:
         <input
+          data-element="text-field"
           type="text"
         >
       </p>
