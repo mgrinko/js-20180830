@@ -36,13 +36,13 @@ module.exports = {
     ]
   },
 
-  plugins: [
-    new UglifyJsPlugin()
-  ],
-
-  optimization: {
-    minimizer: [new UglifyJsPlugin()]
-  },
+  // plugins: [
+  //   new UglifyJsPlugin()
+  // ],
+  //
+  // optimization: {
+  //   minimizer: [new UglifyJsPlugin()]
+  // },
 
   devServer: {
     contentBase: path.join(__dirname, 'public'),
