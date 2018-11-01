@@ -1,8 +1,16 @@
 import HttpService from '../../http-service.js'
 
 const PhoneService = {
-  getPhones() {
-    return HttpService.sendRequest('phones.json');
+  async getPhones({ query, orderField } = {}) {
+    let phones = await HttpService.sendRequest('phones.json');
+
+    return phones
+      // .filter(phone => phone.name.includes(query))
+      // .sort((phoneA, phoneB) => {
+      //   return phoneA[orderField] > phoneB[orderField]
+      //     ? 1
+      //     : -1;
+      // });
   },
 
   getPhone(phoneId) {
