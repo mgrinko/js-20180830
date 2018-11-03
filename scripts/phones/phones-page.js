@@ -68,7 +68,27 @@ export default class PhonesPage {
     this._filter = new PhonesFilter({
       element: this._element.querySelector('[data-component="phones-filter"]'),
     });
+
+    this._filter.subscribe('sort', () => {
+      let query = event.detail;
+
+       PhoneService.getPhones((phones) => {
+         this._filter.sort(phones, query);
+         this._catalog.show(phones);
+       })
+    });
+
+    this._filter.subscribe('search', () => {
+      let query = event.detail;
+
+      PhoneService.getPhones((phones) => {
+        this._catalog.show(this._filter.search(phones, query));
+      })
+
+    })
   }
+
+
 
   _render() {
     this._element.innerHTML = `

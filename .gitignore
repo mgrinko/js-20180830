@@ -1,3 +1,5 @@
 .idea
+.editorconfig
+.eslintrc.js
 node_modules
 package-lock.json
